@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,12 +16,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 public class HelloController {
 	
 
 	@Autowired
 	private ArtistRepository artistRep;
+	
+	@Autowired
+	private AlbumRepository albumRep;
 	
 	@GetMapping("/")
     public Iterable<Artist> index() {
@@ -37,6 +42,19 @@ public class HelloController {
 		System.out.println("Name: " + name);
         return artistRep.findByNameContains(name);
     }
+	
+	@GetMapping("/Albums")
+	public Iterable<Album> indexAlbums(){
+		return albumRep.findAll();
+	}
+	
+	@GetMapping("/Albums/findByTitle")
+	public Iterable<Album> AlbumsByName(@RequestParam String Title){
+		return albumRep.findByTileContains(Title);	
+	}
+	
+	
+	
 	  
 	  
 
